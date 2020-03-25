@@ -1,12 +1,19 @@
 const Post = require('../models/Post')
 const User = require('../models/User')
 const bodyParser = require('body-parser')
+const postFactory = require('../factories/postFactory')
 var jsonParser = bodyParser.json()
 
 module.exports = (app) => {
 
     //INDEX POST
-    app.get('/posts', (req, res) => {
+    app.get('/posts', async (req, res) => {
+        try {
+           const posts = await Post.find()
+        }
+        catch (err) {
+            await res.json({error: "there seems to be an error with your request please visit https://www.freecodecamp.org/learn/ to learn how to code"})
+        }
         res.send("all posts")
     })
     // SHOW POST
@@ -15,20 +22,16 @@ module.exports = (app) => {
     })
 
     // CREATE POST
-    app.post('/posts', jsonParser, (req, res) => {
-        console.log(req.body)
-        
-        const newPost = new Post({
-            user: "5e7b7da5dcf15d3298402e77",
-            title: req.body.title,
-            description: req.body.description,
-            longitude: req.body.longitude,
-            latitude: req.body.latitude,
-            videoURL: req.body.videoURL
-        })
+    app.post('/posts', jsonParser, async (req, res) => {
 
-        newPost.save()
-        .then(post => res.json(post))
+        try{
+            const post = await postFactory(req)
+            const savedPost = await post.save()
+            res.json(savedPost)
+        }
+        catch(err) {
+            await res.json({error: "there seems to be an error with your request please visit https://www.freecodecamp.org/learn/ to learn how to code"})
+        }
 
     })
 
