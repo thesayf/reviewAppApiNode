@@ -1,0 +1,29 @@
+<html>
+    <head>
+   </head>
+
+    <body>
+       <h1>Rori's Postman</h1>
+       <h2>Create Post</h2>
+       <p id="demo" onclick="myFunction()">Click me to send Post.</p>
+
+        <script>
+            function myFunction() {
+                document.getElementById("demo").style.color = "red";
+                 fetch("http://localhost:3000/posts", {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        title: "First Post",
+                        description: "First Post Description",
+                        longitude: 333.333,
+                        latitude: 444.444, 
+                        videoURL: "htttp/videobabay"
+                    })
+                })
+                .then(res => res.json())
+                .then(user => console.log(user))
+            }
+        </script>
+    </body>
+</html>
