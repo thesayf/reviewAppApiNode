@@ -14,11 +14,13 @@
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        title: "First Post",
-                        description: "First Post Description",
+                        id: "5e7bea857873c948ddec102c",
+                        title: "post title",
+                        description: "Fourth Post Description",
                         longitude: 333.333,
                         latitude: 444.444, 
-                        videoURL: "htttp/videobabay"
+                        videoURL: "htttp/videobabay",
+                        tags: ["fun", "to", "be", "here"]
                     })
                 })
                 .then(res => res.json())

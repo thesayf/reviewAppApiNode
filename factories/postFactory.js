@@ -1,10 +1,9 @@
 module.exports = (req) => {
     return new Post({
-        user: "5e7b7da5dcf15d3298402e77",
+        user: req.body.id,
         title: req.body.title,
         description: req.body.description,
-        longitude: req.body.longitude,
-        latitude: req.body.latitude,
-        videoURL: req.body.videoURL
+        geo_with_lat_lon: { lat: 40.12, lon: -71.34},
+        tags: req.body.tags
     })
 }
