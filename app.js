@@ -21,9 +21,9 @@ app.get('/postCreater', (req, res) => {
 
 postController(app, client);
 userController(app);
-client.cluster.health({},function(err,resp,status) {  
-  // console.log("-- Client Health --",resp);
-});
+// client.cluster.health({},function(err,resp,status) {  
+//   console.log("-- Client Health --",resp);
+// });
 
 User.createMapping((err, mapping) => {
   console.log('User Elastic Search Mapping Created');
@@ -34,21 +34,21 @@ User.createMapping((err, mapping) => {
 //   console.log(mapping)
 // });
 
-client.indices.getMapping({  
-  index: 'posts',
-},
-function (error,response) {  
-  if (error){
-    console.log(error.message);
-  }
-  else {
-    console.log(response.body.posts.mappings);
-  }
-});
+// client.indices.getMapping({  
+//   index: 'posts',
+// },
+// function (error,response) {  
+//   if (error){
+//     console.log(error.message);
+//   }
+//   else {
+//     console.log(response.body.posts.mappings);
+//   }
+// });
 
 Post.createMapping((err, mapping) => {
   console.log('Post Elastic Search Mapping Created');
-  console.log(mapping)
+  // console.log(mapping)
   // console.log(err)
 });
 
