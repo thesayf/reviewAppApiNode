@@ -6,6 +6,30 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    comments: [{
+        comment: { 
+            type: String,
+            required: true
+         },
+        commentator: {
+            id:   {
+                type: Schema.Types.ObjectId, ref: 'User',
+                required: true
+            }
+        }
+    }],
+    tags: {
+        type: Array,
+        required: true
+    },
     geo_with_lat_lon: {
         geo_point: {
           type: String,

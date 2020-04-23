@@ -68,7 +68,7 @@ module.exports = (app) => {
         }
     })
 
-    app.get('/users/:id/followed'), async (req, res) => {
+    app.get('/users/:id/followed', async (req, res) => {
         try{
             const users = await User.findById({_id: req.params.id}).populate('followed')
             await res.json(users)
@@ -76,7 +76,7 @@ module.exports = (app) => {
         catch{
 
         }
-    }
+    })
 
 
 }

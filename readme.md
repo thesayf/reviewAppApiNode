@@ -98,7 +98,7 @@ http://localhost:3000/users/:id
 }
 
 * Follow User
-http://localhost:3000/users/:id/follow
+http://localhost:3000/users/follow-user
 {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -109,7 +109,7 @@ http://localhost:3000/users/:id/follow
 }
 
 * UnFollow User
-http://localhost:3000/users/:id/unfollow
+http://localhost:3000/users/unfollow
 {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

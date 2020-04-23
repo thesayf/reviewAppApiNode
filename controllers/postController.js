@@ -71,19 +71,19 @@ module.exports = (app) => {
     //SEARCH POSTS BY TAG
     app.post('/posts/search', jsonParser, async (req, res) => {
     try {
-        // const { body } = await client.search({
-        //     index: 'posts',
-        //     body: {
-        //       query: {
-        //         match: {
-        //             tags: {
-        //                 query: req.body.query
-        //             }
-        //         }
-        //       }
-        //     }
-        //   })
-        //   res.json(body.hits.hits)
+        const { body } = await client.search({
+            index: 'posts',
+            body: {
+              query: {
+                match: {
+                    tags: {
+                        query: req.body.query
+                    }
+                }
+              }
+            }
+          })
+          res.json(body.hits.hits)
     }
     catch(err) {
         console.log(err)
@@ -95,7 +95,11 @@ module.exports = (app) => {
     app.post('/posts/search/geo', jsonParser, async (req, res) => {
         
         try{
-            const { posts } = await client.search({
+
+            console.log(req.body.query)
+            console.log(req.body.lat)
+            console.log(req.body.lon)
+            const { body } = await client.search({
                 index: 'posts',
                 body: {
                 query: {
@@ -103,7 +107,7 @@ module.exports = (app) => {
                         must: {
                             match: {
                                 tags: {
-                                    query: "to"
+                                    query: req.body.query
                                 }
                             }
                         },
@@ -111,8 +115,8 @@ module.exports = (app) => {
                           geo_distance: {
                               distance: "200km",
                               geo_with_lat_lon : {
-                                  lat : 40,
-                                  lon : -70
+                                  lat : req.body.lat,
+                                  lon : req.body.lon
                               }
                           }
                         }
@@ -120,10 +124,7 @@ module.exports = (app) => {
                 }
                 }
               })
-        await res.json(posts)
-
-
-
+        await res.json(body)
         }
         catch(err) {
             console.log(err)
