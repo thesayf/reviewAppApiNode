@@ -146,7 +146,10 @@ http://localhost:3000/users/:id/followed
 
 * Problems we have
 1) Data is coming back from elastic search without the user. Need to find a solution.
+2) Need to populate 1 posts comments user
 2) Video Upload 
-3) Error handling
 4) Get onto AWS server
 5) Add Firebase back in 
+6) Error handling
+7) Add GraphQL
+

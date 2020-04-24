@@ -71,6 +71,7 @@ module.exports = (app) => {
     //SEARCH POSTS BY TAG
     app.post('/posts/search', jsonParser, async (req, res) => {
     try {
+        const ids = []
         const { body } = await client.search({
             index: 'posts',
             body: {
@@ -83,7 +84,11 @@ module.exports = (app) => {
               }
             }
           })
-          res.json(body.hits.hits)
+        await body.hits.hits.map(post => {
+              ids.push(post._id)
+        })
+        const posts = await Post.find({'_id': { $in: ids}}).populate('user')
+        await res.json(posts)
     }
     catch(err) {
         console.log(err)
@@ -93,12 +98,8 @@ module.exports = (app) => {
 
     //SEARCH POSTS BY LOCAITON
     app.post('/posts/search/geo', jsonParser, async (req, res) => {
-        
         try{
-
-            console.log(req.body.query)
-            console.log(req.body.lat)
-            console.log(req.body.lon)
+            const ids = []
             const { body } = await client.search({
                 index: 'posts',
                 body: {
@@ -124,7 +125,12 @@ module.exports = (app) => {
                 }
                 }
               })
-        await res.json(body)
+        // await res.json(body)
+        await body.hits.hits.map(post => {
+            ids.push(post._id)
+        })
+        const posts = await Post.find({'_id': { $in: ids}}).populate('user')
+        await res.json(posts)
         }
         catch(err) {
             console.log(err)
