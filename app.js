@@ -8,6 +8,16 @@ const db = mongoose.connection
 const { Client } = require('@elastic/elasticsearch')
 const client = new Client({node: 'http://localhost:9200/'})
 const User = require('./models/User')
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const ID = 'AKIAIYG5J4BI67UQNYYA';
+const SECRET = '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';
+const BUCKET_NAME = 'roris-test-bucket';
+AWS.config.update({region: 'eu-west-2'});
+const s3 = new AWS.S3({
+  accessKeyId: ID,
+  secretAccessKey: SECRET
+});
 
 app.set('view engine', 'ejs');
 
@@ -21,37 +31,14 @@ app.get('/postCreater', (req, res) => {
 
 postController(app, client);
 userController(app);
-// client.cluster.health({},function(err,resp,status) {  
-//   console.log("-- Client Health --",resp);
-// });
 
 User.createMapping((err, mapping) => {
   console.log('User Elastic Search Mapping Created');
 });
 
-// Geo.createMapping((err, mapping) => {
-//   console.log('Geo Elastic Search Mapping Created');
-//   console.log(mapping)
-// });
-
-// client.indices.getMapping({  
-//   index: 'posts',
-// },
-// function (error,response) {  
-//   if (error){
-//     console.log(error.message);
-//   }
-//   else {
-//     console.log(response.body.posts.mappings);
-//   }
-// });
-
 Post.createMapping((err, mapping) => {
   console.log('Post Elastic Search Mapping Created');
-  // console.log(mapping)
-  // console.log(err)
 });
-
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {

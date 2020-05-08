@@ -1,8 +1,7 @@
 module.exports.comment = async (req, user) => {
-return {
-    comment: req.body.comment,
-    commentator: {
-        id: req.body.userId
-    }
-  }
+return new Comment({
+    text: req.body.comment,
+    user: req.body.userId,
+    post: req.body.postId
+  })
 }

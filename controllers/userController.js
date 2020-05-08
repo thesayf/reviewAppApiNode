@@ -53,8 +53,8 @@ module.exports = (app) => {
             await followingUser.save(); 
             await res.send("You have successfully unfollowed this person");
         }
-        catch{
-
+        catch(err){
+            console.log(err)
         }
     })
 

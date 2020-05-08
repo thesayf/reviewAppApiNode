@@ -1,18 +1,33 @@
-const Post = require('../models/Post')
-const User = require('../models/User')
-const bodyParser = require('body-parser')
-const postFactory = require('../factories/postFactory')
-const commentFactory = require('../factories/commentFactory')
-var jsonParser = bodyParser.json()
-const { Client } = require('@elastic/elasticsearch')
-const client = new Client({node: 'http://localhost:9200/'})
+const Post = require('../models/Post');
+const User = require('../models/User');
+const Comment = require('../models/Comment')
+const bodyParser = require('body-parser');
+const postFactory = require('../factories/postFactory');
+const commentFactory = require('../factories/commentFactory');
+const jsonParser = bodyParser.json();
+const { Client } = require('@elastic/elasticsearch');
+const client = new Client({node: 'http://localhost:9200/'});
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const ID = 'AKIAIYG5J4BI67UQNYYA';
+const SECRET = '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';
+const BUCKET_NAME = 'roris-test-bucket';
+const s3 = new AWS.S3({
+  accessKeyId: ID,
+  secretAccessKey: SECRET
+});
 
 module.exports = (app) => {
 
     //INDEX POST
     app.get('/posts', async (req, res) => {
         try {
-           const posts = await Post.find().populate('user')
+           const posts = await Post.find()
+           .populate('user')
+           .populate({
+            path: 'comments',
+            populate: { path: 'user' }
+          });
            res.json(posts)
         }
         catch (err) {
@@ -46,14 +61,28 @@ module.exports = (app) => {
     // CREATE POST
     app.post('/posts', jsonParser, async (req, res) => {
         try{
-            const post = await postFactory(req)
-            const savedPost = await post.save()
-            await res.json(savedPost)
+            const params = {
+                Bucket: BUCKET_NAME,
+                Key: 'pinky45.png', // File name you want to save as in S3
+                Body: req.body.video_url
+              };
+            await s3.upload(params, async function(err, data) {
+                if (err) {
+                    throw err;
+                }
+                const post = await postFactory(req, data.Location)
+                const savedPost = await post.save()
+                await res.json(savedPost)
+                // console.log(`File uploaded successfully. ${data.Location}`);
+            });
+            await console.log("this ran")
+
         }
         catch(err) {
             console.log(err)
             await res.json({error: "there seems to be an error"})
         }
+
     })
 
     //DELETE POST
@@ -141,12 +170,13 @@ module.exports = (app) => {
     //ADD COMMENT 
     app.post('/comments', jsonParser, async (req, res) => {
         try{
-            console.log(req.body)
             const comment = await commentFactory.comment(req)
+            const savedComment = await comment.save()
             const post = await Post.findById(req.body.postId)
-            const savedComment = await post.comments.addToSet(comment)
+            console.log(savedComment)
+            const updatedPost = await post.comments.addToSet(comment._id)
             await post.save()
-            await res.json(savedComment)
+            await res.json(updatedPost)
         }
         catch(e) {
             res.send("there was an error")

@@ -2,33 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const mongoosastic = require('mongoosastic');
 const PostSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    title: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    comments: [{
-        comment: { 
-            type: String,
-            required: true
-         },
-        commentator: {
-            id:   {
-                type: Schema.Types.ObjectId, ref: 'User',
-                required: true
-            }
-        }
-    }],
     tags: {
-        type: Array,
-        required: true
+        type: Array, 
+        es_type:'string'
     },
     geo_with_lat_lon: {
         geo_point: {
@@ -37,7 +13,23 @@ const PostSchema = new Schema({
         },
         lat: { type: Number },
         lon: { type: Number }
-    }
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    comments: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Comment'
+    }],
+    video: {
+        type: String,
+        required: true
+    },
 });
 
 PostSchema.plugin(mongoosastic, {
