@@ -63,7 +63,7 @@ module.exports = (app) => {
             const users = await User.findById({_id: req.params.id}).populate('followers')
             await res.json(users)
         }
-        catch{
+        catch(err){
 
         }
     })
@@ -73,7 +73,7 @@ module.exports = (app) => {
             const users = await User.findById({_id: req.params.id}).populate('followed')
             await res.json(users)
         }
-        catch{
+        catch(err){
 
         }
     })
