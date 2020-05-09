@@ -7,7 +7,8 @@ const mongoosastic = require('mongoosastic')
 const db = mongoose.connection
 const { Client } = require('@elastic/elasticsearch')
 const client = new Client({node: 'http://localhost:9200/'})
-const User = require('./models/User')
+const User = require('./models/User');
+const Post = require('./models/Post');
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const ID = 'AKIAIYG5J4BI67UQNYYA';
@@ -34,10 +35,14 @@ userController(app);
 
 User.createMapping((err, mapping) => {
   console.log('User Elastic Search Mapping Created');
+  // console.log(mapping)
+  // console.log(err)
 });
 
 Post.createMapping((err, mapping) => {
   console.log('Post Elastic Search Mapping Created');
+  // console.log(mapping)
+  // console.log(err)
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));

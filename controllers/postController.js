@@ -42,7 +42,7 @@ module.exports = (app) => {
             const post = await Post.findById({_id: req.params.id}).populate('user')
             res.json(post)
         }
-        catch {
+        catch(err){
             await res.json({error: "there seems to be an error"})
         }
     })
@@ -164,7 +164,6 @@ module.exports = (app) => {
         catch(err) {
             console.log(err)
         }
-
     })
 
     //ADD COMMENT 
