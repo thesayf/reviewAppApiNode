@@ -53,7 +53,7 @@ module.exports = (app) => {
           const posts = await Post.find({user: req.params.userId}).populate('user')
           await res.json(posts)
         }
-        catch {
+        catch(err) {
             await res.json({error: "there seems to be an error"})
         }
     })
@@ -92,8 +92,8 @@ module.exports = (app) => {
             const user = await Post.findOneAndRemove({ _id: req.params.id })
             await res.json(user)
         }
-        catch{
-
+        catch(err){
+            
         }
     })
 
