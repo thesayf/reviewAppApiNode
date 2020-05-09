@@ -23,7 +23,7 @@ const s3 = new AWS.S3({
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.send("hello world")
 })
 
 app.get('/postCreater', (req, res) => {
