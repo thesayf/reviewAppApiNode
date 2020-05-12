@@ -1,4 +1,6 @@
 const Post = require('../models/Post');
+const User = require('../models/User');
+const Comment = require('../models/Comment')
 const bodyParser = require('body-parser');
 const postFactory = require('../factories/postFactory');
 const commentFactory = require('../factories/commentFactory');
@@ -6,6 +8,7 @@ const jsonParser = bodyParser.json();
 const { Client } = require('@elastic/elasticsearch');
 const client = new Client({node: 'http://localhost:9200/'});
 const AWS = require('aws-sdk');
+const fs = require('fs');
 const ID = 'AKIAIYG5J4BI67UQNYYA';
 const SECRET = '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';
 const BUCKET_NAME = 'roris-test-bucket';
