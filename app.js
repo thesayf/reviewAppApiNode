@@ -9,16 +9,6 @@ const { Client } = require('@elastic/elasticsearch')
 const client = new Client({node: 'http://localhost:9200/'})
 const User = require('./models/User');
 const Post = require('./models/Post');
-const AWS = require('aws-sdk');
-const fs = require('fs');
-const ID = 'AKIAIYG5J4BI67UQNYYA';
-const SECRET = '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';
-const BUCKET_NAME = 'roris-test-bucket';
-AWS.config.update({region: 'eu-west-2'});
-const s3 = new AWS.S3({
-  accessKeyId: ID,
-  secretAccessKey: SECRET
-});
 
 app.set('view engine', 'ejs');
 

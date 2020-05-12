@@ -8,10 +8,10 @@ const jsonParser = bodyParser.json();
 const { Client } = require('@elastic/elasticsearch');
 const client = new Client({node: 'http://localhost:9200/'});
 const AWS = require('aws-sdk');
-const fs = require('fs');
-const ID = 'AKIAIYG5J4BI67UQNYYA';
-const SECRET = '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';
+const ID = 'AKIAJIQZZTYEZBZ2BISQ';
+const SECRET = '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';
 const BUCKET_NAME = 'roris-test-bucket';
+const { v4: uuidv4 } = require('uuid');
 const s3 = new AWS.S3({
   accessKeyId: ID,
   secretAccessKey: SECRET
@@ -63,19 +63,22 @@ module.exports = (app) => {
         try{
             const params = {
                 Bucket: BUCKET_NAME,
-                Key: 'pinky45.png', // File name you want to save as in S3
-                Body: req.body.video_url
+                Key: `${uuidv4()}.mp4`, // File name you want to save as in S3
+                Body: req.body.videoUrl
               };
+
+            console.log(params)
+            console.log(params.Body)
             await s3.upload(params, async function(err, data) {
                 if (err) {
                     throw err;
                 }
+                console.log(data)
                 const post = await postFactory(req, data.Location)
                 const savedPost = await post.save()
                 await res.json(savedPost)
-                // console.log(`File uploaded successfully. ${data.Location}`);
+                console.log(`File uploaded successfully. ${data.Location}`);
             });
-            await console.log("this ran")
 
         }
         catch(err) {
