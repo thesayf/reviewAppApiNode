@@ -6,10 +6,22 @@ const postFactory = require('../factories/postFactory');
 const commentFactory = require('../factories/commentFactory');
 const jsonParser = bodyParser.json();
 const { Client } = require('@elastic/elasticsearch');
-const client = new Client({node: 'http://localhost:9200/'});
+const client = new Client({
+// node: 'https://search-second-test-a4j4fj5gloerfo6mnlcvvtajka.eu-west-2.es.amazonaws.com',
+// auth: {
+//     username: 'rori',
+//     password: 'Ishaqsol1234'
+// },
+  node: 'https://2177ea27fc8f46b3b1f0448d2f1279b0.eu-west-2.aws.cloud.es.io:9243',
+  auth: {
+  username: 'elastic',
+  password: 'jGjdcjEeMa3ZcM2g6Nxf0jFR'
+}
+
+});
 const AWS = require('aws-sdk');
-const ID = 'AKIAJIQZZTYEZBZ2BISQ';
-const SECRET = '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';
+const ID = 'AKIAJPOIZTJOARZKTCRQ';
+const SECRET = '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';
 const BUCKET_NAME = 'roris-test-bucket';
 const { v4: uuidv4 } = require('uuid');
 const s3 = new AWS.S3({
@@ -47,7 +59,7 @@ module.exports = (app) => {
         }
     })
 
-      //VIEW ONE USERS POSTS
+    //VIEW ONE USERS POSTS
       app.get('/posts/user/:userId', async (req, res) => {
         try {
           const posts = await Post.find({user: req.params.userId}).populate('user')
@@ -65,8 +77,7 @@ module.exports = (app) => {
                 Bucket: BUCKET_NAME,
                 Key: `${uuidv4()}.mp4`, // File name you want to save as in S3
                 Body: req.body.videoUrl
-              };
-
+            };
             console.log(params)
             console.log(params.Body)
             await s3.upload(params, async function(err, data) {
@@ -76,10 +87,21 @@ module.exports = (app) => {
                 console.log(data)
                 const post = await postFactory(req, data.Location)
                 const savedPost = await post.save()
+                const { body } = await client.index({
+                    id: savedPost._id,
+                    index: 'posts',
+                    body: {
+                        title: savedPost.title,
+                        description: savedPost.description,
+                        tags: savedPost.tags,
+                        location: {
+                                lat: savedPost.lat,
+                                lon: savedPost.lon,
+                }
+                      },                        
+                  })
                 await res.json(savedPost)
-                console.log(`File uploaded successfully. ${data.Location}`);
             });
-
         }
         catch(err) {
             console.log(err)
@@ -117,7 +139,7 @@ module.exports = (app) => {
             }
           })
         await body.hits.hits.map(post => {
-              ids.push(post._id)
+            ids.push(post._id)
         })
         const posts = await Post.find({'_id': { $in: ids}}).populate('user')
         await res.json(posts)
@@ -147,7 +169,7 @@ module.exports = (app) => {
                         filter: {
                           geo_distance: {
                               distance: "200km",
-                              geo_with_lat_lon : {
+                              location : {
                                   lat : req.body.lat,
                                   lon : req.body.lon
                               }
@@ -157,7 +179,6 @@ module.exports = (app) => {
                 }
                 }
               })
-        // await res.json(body)
         await body.hits.hits.map(post => {
             ids.push(post._id)
         })
