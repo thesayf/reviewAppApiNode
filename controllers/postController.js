@@ -1,17 +1,11 @@
 const Post = require('../models/Post');
-const User = require('../models/User');
-const Comment = require('../models/Comment')
 const bodyParser = require('body-parser');
 const postFactory = require('../factories/postFactory');
 const commentFactory = require('../factories/commentFactory');
 const jsonParser = bodyParser.json();
 const { Client } = require('@elastic/elasticsearch');
+const ENV = require('dotenv').config();
 const client = new Client({
-// node: 'https://search-second-test-a4j4fj5gloerfo6mnlcvvtajka.eu-west-2.es.amazonaws.com',
-// auth: {
-//     username: 'rori',
-//     password: 'Ishaqsol1234'
-// },
   node: 'https://2177ea27fc8f46b3b1f0448d2f1279b0.eu-west-2.aws.cloud.es.io:9243',
   auth: {
   username: 'elastic',

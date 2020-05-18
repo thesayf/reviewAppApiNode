@@ -17,9 +17,4 @@ const CommentSchema = new Schema({
     }
 })
 
-CommentSchema.plugin(mongoosastic, {
-    "host": "localhost",
-    "port": 9200
-});
-
 module.exports = Comment = mongoose.model('Comment', CommentSchema);
