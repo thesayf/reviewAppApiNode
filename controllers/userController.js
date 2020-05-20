@@ -1,7 +1,7 @@
-const bodyParser = require('body-parser')
-const userFactory = require('../factories/userFactory')
-var jsonParser = bodyParser.json()
-const User = require('../models/User')
+const bodyParser = require('body-parser');
+const userFactory = require('../factories/userFactory');
+var jsonParser = bodyParser.json();
+const User = require('../models/User');
 
 module.exports = (app) => {
 
@@ -28,10 +28,9 @@ module.exports = (app) => {
         }
     });
 
-
     app.get('/users/:id', jsonParser, async (req, res) => {
         try {
-            const user = await User.findById({_id: req.params.id});
+            const user = await User.findById({ _id: req.params.id });
             await res.json(user);
         }
         catch(err) {
@@ -39,7 +38,6 @@ module.exports = (app) => {
             await res.json({error: "there seems to be an error"})
         }
     });
-
 
     app.delete('/users/:id', async (req, res) => {
         try{
@@ -49,7 +47,7 @@ module.exports = (app) => {
         catch(err) {
             console.log(err)
         }
-    })
+    });
 
     app.post('/users/follow-user', jsonParser, async (req, res) => {
         try {
@@ -66,7 +64,7 @@ module.exports = (app) => {
         catch(err) {
             console.log(err)
         }
-    })
+    });
 
     app.post('/users/unfollow-user', jsonParser, async (req, res) => {
         try {
@@ -81,7 +79,7 @@ module.exports = (app) => {
         catch(err){
             console.log(err)
         }
-    })
+    });
 
     app.get('/users/:id/followers', async (req, res) => {        
         try{
@@ -91,7 +89,7 @@ module.exports = (app) => {
         catch(err){
 
         }
-    })
+    });
 
     app.get('/users/:id/followed', async (req, res) => {
         try{
@@ -101,5 +99,5 @@ module.exports = (app) => {
         catch(err){
 
         }
-    })
+    });
 }

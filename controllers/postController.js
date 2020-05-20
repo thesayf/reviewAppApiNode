@@ -39,7 +39,7 @@ module.exports = (app) => {
             console.log(err)
             await res.json({error: "there seems to be an error"})
         }
-    })
+    });
 
     // SHOW POST
     app.get('/posts/:id', async (req , res) => {
@@ -50,7 +50,7 @@ module.exports = (app) => {
         catch(err){
             await res.json({error: "there seems to be an error"})
         }
-    })
+    });
 
     //VIEW ONE USERS POSTS
       app.get('/posts/user/:userId', async (req, res) => {
@@ -61,45 +61,47 @@ module.exports = (app) => {
         catch(err) {
             await res.json({error: "there seems to be an error"})
         }
-    })
+    });
 
     // CREATE POST
     app.post('/posts', jsonParser, async (req, res) => {
         try{
-            const params = {
-                Bucket: BUCKET_NAME,
-                // Key: `${uuid()}.mp4`, // File name you want to save as in S3
-                Body: req.body.videoUrl
-            };
-            await s3.upload(params, async function(err, data) {
-                if (err) {
-                    throw err;
-                }
-                console.log(data)
-                const post = await postFactory(req, data.Location)
-                const savedPost = await post.save()
-                const { body } = await client.index({
-                    id: savedPost._id,
-                    index: 'posts',
-                    body: {
-                        title: savedPost.title,
-                        description: savedPost.description,
-                        tags: savedPost.tags,
-                        location: {
-                                lat: savedPost.lat,
-                                lon: savedPost.lon,
-                }
-                      },                        
-                  })
-                await res.json(savedPost)
-            });
+            const post = await postFactory(req)
+            const savedPost = await post.save()
+            await res.json(savedPost)
+            // const params = {
+            //     Bucket: BUCKET_NAME,
+            //     // Key: `${uuid()}.mp4`, // File name you want to save as in S3
+            //     Body: req.body.videoUrl
+            // };
+            // await s3.upload(params, async function(err, data) {
+            //     if (err) {
+            //         throw err;
+            //     }
+            //     console.log(data)
+            //     const post = await postFactory(req, data.Location)
+            //     const savedPost = await post.save()
+            //     // const { body } = await client.index({
+            //     //     id: savedPost._id,
+            //     //     index: 'posts',
+            //     //     body: {
+            //     //         title: savedPost.title,
+            //     //         description: savedPost.description,
+            //     //         tags: savedPost.tags,
+            //     //         location: {
+            //     //                 lat: savedPost.lat,
+            //     //                 lon: savedPost.lon,
+            //     // }
+            //     //       },                        
+            //     //   })
+            //     await res.json(savedPost)
+            // });
         }
         catch(err) {
             console.log(err)
             await res.json({error: "there seems to be an error"})
         }
-
-    })
+    });
 
     //DELETE POST
     app.delete('/posts/:id', async (req , res) => {
@@ -111,7 +113,7 @@ module.exports = (app) => {
         catch(err){
             
         }
-    })
+    });
 
     //SEARCH POSTS BY TAG
     app.post('/posts/search', jsonParser, async (req, res) => {
@@ -139,7 +141,7 @@ module.exports = (app) => {
         console.log(err)
     }
     
-    })
+    });
 
     //SEARCH POSTS BY LOCAITON
     app.post('/posts/search/geo', jsonParser, async (req, res) => {
@@ -179,7 +181,7 @@ module.exports = (app) => {
         catch(err) {
             console.log(err)
         }
-    })
+    });
 
     //ADD COMMENT 
     app.post('/comments', jsonParser, async (req, res) => {
@@ -196,6 +198,6 @@ module.exports = (app) => {
             res.send("there was an error")
             console.log(e)
         }
-    })
+    });
 
 }
