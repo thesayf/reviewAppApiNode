@@ -11,13 +11,12 @@ const client = new Client({
   username: 'elastic',
   password: 'jGjdcjEeMa3ZcM2g6Nxf0jFR'
 }
-
 });
 const AWS = require('aws-sdk');
 const ID = 'AKIAJPOIZTJOARZKTCRQ';
 const SECRET = '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';
 const BUCKET_NAME = 'roris-test-bucket';
-const { v4: uuidv4 } = require('uuid');
+// const uuid = require('uuid');
 const s3 = new AWS.S3({
   accessKeyId: ID,
   secretAccessKey: SECRET
@@ -69,11 +68,9 @@ module.exports = (app) => {
         try{
             const params = {
                 Bucket: BUCKET_NAME,
-                Key: `${uuidv4()}.mp4`, // File name you want to save as in S3
+                // Key: `${uuid()}.mp4`, // File name you want to save as in S3
                 Body: req.body.videoUrl
             };
-            console.log(params)
-            console.log(params.Body)
             await s3.upload(params, async function(err, data) {
                 if (err) {
                     throw err;
