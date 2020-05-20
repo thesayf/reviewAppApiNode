@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const userFactory = require('../factories/userFactory')
 var jsonParser = bodyParser.json()
+const User = require('../models/User')
 
 module.exports = (app) => {
 
@@ -14,7 +15,31 @@ module.exports = (app) => {
             console.log(err)
             await res.json({error: "there seems to be an error"})
         }
-    })
+    });
+
+    app.get('/users', jsonParser, async (req, res) => {
+        try {
+            const user = await User.find();
+            await res.json(user);
+        }
+        catch(err) {
+            console.log(err)
+            await res.json({error: "there seems to be an error"})
+        }
+    });
+
+
+    app.get('/users/:id', jsonParser, async (req, res) => {
+        try {
+            const user = await User.findById({_id: req.params.id});
+            await res.json(user);
+        }
+        catch(err) {
+            console.log(err)
+            await res.json({error: "there seems to be an error"})
+        }
+    });
+
 
     app.delete('/users/:id', async (req, res) => {
         try{
