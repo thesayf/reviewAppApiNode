@@ -12,4 +12,4 @@ module.exports = async req => {
   if ((payload.aud === CLIENT_ID) && (payload.iss === 'accounts.google.com' || 'https://accounts.google.com'))
     return payload
   return null
-}
+} 
