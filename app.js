@@ -29,4 +29,5 @@ mongoose.connect('mongodb+srv://Rori:Ishaqsol1234@cluster0-mawms.mongodb.net/tes
   useUnifiedTopology: true
 });
 
-app.listen(3000, () => console.log("waiting on port 3000"));
+// mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0-mawms.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
+// app.listen(3000, () => console.log("waiting on port 3000"));

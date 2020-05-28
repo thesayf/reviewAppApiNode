@@ -5,25 +5,21 @@ const commentFactory = require('../factories/commentFactory');
 const jsonParser = bodyParser.json();
 const { Client } = require('@elastic/elasticsearch');
 const ENV = require('dotenv').config();
+const AWS = require('aws-sdk');
+// const uuid = require('uuid');
 const client = new Client({
-  node: 'https://2177ea27fc8f46b3b1f0448d2f1279b0.eu-west-2.aws.cloud.es.io:9243',
+  node: process.env.ELASTIC_SEARCH_ENDPOINT,
   auth: {
-  username: 'elastic',
-  password: 'jGjdcjEeMa3ZcM2g6Nxf0jFR'
+  username: process.env.AWS_ELASTIC_SEARCH_SERVICE_USERNAME,
+  password: process.env.AWS_ELASTIC_SEARCH_SERVICE_PASSWORD
 }
 });
-const AWS = require('aws-sdk');
-const ID = 'AKIAJPOIZTJOARZKTCRQ';
-const SECRET = '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';
-const BUCKET_NAME = 'roris-test-bucket';
-// const uuid = require('uuid');
 const s3 = new AWS.S3({
-  accessKeyId: ID,
-  secretAccessKey: SECRET
+  accessKeyId: process.env.AWS_S3_ID,
+  secretAccessKey: process.env.AWS_S3_SECRET
 });
 
 module.exports = (app) => {
-
     //INDEX POST
     app.get('/posts', async (req, res) => {
         try {
@@ -70,7 +66,7 @@ module.exports = (app) => {
             const savedPost = await post.save()
             await res.json(savedPost)
             // const params = {
-            //     Bucket: BUCKET_NAME,
+            //     Bucket: process.env.AWS_S3_BUCKETNAME,
             //     // Key: `${uuid()}.mp4`, // File name you want to save as in S3
             //     Body: req.body.videoUrl
             // };
@@ -111,7 +107,7 @@ module.exports = (app) => {
             await res.json(user)
         }
         catch(err){
-            
+            console.log(err)
         }
     });
 
