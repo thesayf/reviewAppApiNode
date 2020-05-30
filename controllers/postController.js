@@ -7,17 +7,17 @@ const { Client } = require('@elastic/elasticsearch');
 const ENV = require('dotenv').config();
 const AWS = require('aws-sdk');
 // const uuid = require('uuid');
-const client = new Client({
-  node: process.env.ELASTIC_SEARCH_ENDPOINT,
-  auth: {
-  username: process.env.AWS_ELASTIC_SEARCH_SERVICE_USERNAME,
-  password: process.env.AWS_ELASTIC_SEARCH_SERVICE_PASSWORD
-}
-});
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_S3_ID,
-  secretAccessKey: process.env.AWS_S3_SECRET
-});
+// const client = new Client({
+//   node: process.env.ELASTIC_SEARCH_ENDPOINT,
+//   auth: {
+//   username: process.env.AWS_ELASTIC_SEARCH_SERVICE_USERNAME,
+//   password: process.env.AWS_ELASTIC_SEARCH_SERVICE_PASSWORD
+// }
+// });
+// const s3 = new AWS.S3({
+//   accessKeyId: process.env.AWS_S3_ID,
+//   secretAccessKey: process.env.AWS_S3_SECRET
+// });
 
 module.exports = (app) => {
     //INDEX POST
