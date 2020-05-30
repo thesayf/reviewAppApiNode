@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const db = mongoose.connection
 
 app.get('/', (req, res) => {
-    res.send("hello world")
+    res.send("The REVIEW APP API Is Running")
 });
 
 postController(app);
