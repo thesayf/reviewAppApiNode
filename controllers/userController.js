@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const userFactory = require('../factories/userFactory');
 var jsonParser = bodyParser.json();
 const User = require('../models/User');
-const googleVerify = require('../utils/google.verify')
+const googleVerify = require('../utils/google.verify');
 
 module.exports = (app) => {
 
