@@ -25,4 +25,6 @@ db.once('open', function () {
 });
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0-mawms.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
-app.listen(3000, () => console.log("waiting on port 3000"));
+
+const port = process.env.port || 3000;
+app.listen(port, () => console.log("waiting on port 3000"));
